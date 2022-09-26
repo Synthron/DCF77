@@ -678,64 +678,64 @@
       (reference "#PWR0560") (unit 1) (value "GND") (footprint "")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/b282a0b6-b5e8-4140-8c64-ef3c8a77caa8"
-      (reference "AFF401") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF401") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/02380ff4-c58e-4e6b-ad79-851d9caabfbb"
-      (reference "AFF402") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF402") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/d5f116c7-06b0-4635-bcfe-2e78ee95b96f"
-      (reference "AFF403") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF403") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/a6c31783-8229-46eb-b156-640c6bdbe7cb"
-      (reference "AFF404") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF404") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/53c20aff-bbd6-42bb-b785-fb44eec944b8"
-      (reference "AFF405") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF405") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/7e37e38e-5ce6-4be8-ac63-0be35ee0ffb4"
-      (reference "AFF406") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF406") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/f2951677-ba97-4530-8e67-eaa69b4e3157"
-      (reference "AFF407") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF407") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/a399977a-74d6-465c-ae46-83b2068ac8ab"
-      (reference "AFF408") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF408") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/8b8785ee-1079-489f-a114-a4b4b54b3319"
-      (reference "AFF409") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF409") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/27e3c213-7d69-49c0-84d0-ed2cfc0bdead"
-      (reference "AFF410") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF410") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/79391852-f54d-4465-b3da-d5f43f9e5868"
-      (reference "AFF411") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF411") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/c1c6044c-dca8-4daf-b042-de7b0204b3fc"
-      (reference "AFF412") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF412") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/2f04f24d-f615-4946-a2dd-88dd30bbf85e"
-      (reference "AFF413") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF413") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/328d107a-3474-46de-b621-ddfc7aa8364a"
-      (reference "AFF414") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF414") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/9778e9d9-b956-4ab8-af3c-a523c4db8be7"
-      (reference "AFF415") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF415") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/915f653d-e094-472e-9933-d95be789d830"
-      (reference "AFF416") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF416") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/7653dc1a-00d6-4f43-a56d-ffe738fb4bc1"
-      (reference "AFF417") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF417") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/c5eecbd3-bfad-42cf-a192-1877f85ec7fa"
-      (reference "AFF418") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF418") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/4ac8f687-2934-4f0c-8270-c598c8722731"
-      (reference "AFF419") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF419") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/01c6c536-74a3-4125-b881-966f59da4086/dae7a4f6-e2c2-4786-9862-55134ddd76f1"
-      (reference "AFF420") (unit 1) (value "LTS-6980HR") (footprint "Display_7Segment:7SegmentLED_LTS6760_LTS6780")
+      (reference "AFF420") (unit 1) (value "LTS-6980HR") (footprint "eigene:7_Segment_SMD")
     )
     (path "/989c664a-518d-419d-9100-42ce690de30d/ef632349-3043-4527-ad07-31c87475fbaf"
       (reference "C201") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0805_2012Metric")

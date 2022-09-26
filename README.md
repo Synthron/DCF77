@@ -6,11 +6,11 @@ DCF77-Clock with Multi-LED display
 
 ## Roadmap Hardware
 
-- [ ] finalize schematic
-- [ ] Set footprints
-- [ ] decide LED layout
+- [x] finalize schematic
+- [x] Set footprints
+- [x] decide LED layout
   - all on one board
-  - seperate frontpanel pcb
+  - ~~seperate frontpanel pcb~~
 - [ ] Draw Layout
 - [ ] Order Parts
 - [ ] Order PCB
