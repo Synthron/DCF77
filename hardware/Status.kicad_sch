@@ -4137,6 +4137,11 @@
     (uuid ffb6c748-b1ec-4bc5-941a-aab90b99d4c4)
   )
 
+  (text "157112S12700 " (at 95.25 30.48 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid b8db85fe-3a88-478b-a62e-ed2406b7cf52)
+  )
+
   (hierarchical_label "CLK" (shape input) (at 27.94 210.82 180)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 39932f68-f60e-471c-b8b6-704520877b23)
