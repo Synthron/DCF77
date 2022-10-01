@@ -36,7 +36,8 @@ To mitigate possible clock drift, the RTC will be updated on the full hour. This
 - [x] decide LED layout
   - all on one board
   - ~~seperate frontpanel pcb~~
-- [ ] Draw Layout
+- [x] Draw Layout
+- [ ] Review by theBrutzler
 - [ ] Order Parts
 - [ ] check footprints
 - [ ] Order PCB
@@ -46,12 +47,12 @@ To mitigate possible clock drift, the RTC will be updated on the full hour. This
 
 ## Roadmap Software
 
+- [ ] get USB running (for Debug)
 - [ ] Get DCF77 Antenna working and bits decoded
 - [ ] get MCP7221 running
 - [ ] get shift registers running
 - [ ] set up flags for stats and data
 - [ ] get LED rings running
 - [ ] get RTC running
-- [ ] get USB running
 - [ ] Sync everything to start of minute/second
 - [ ] get everything running together
