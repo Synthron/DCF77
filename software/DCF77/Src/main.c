@@ -21,11 +21,14 @@
 #include "main.h"
 #include "rtc.h"
 #include "spi.h"
+#include "tim.h"
 #include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "dcf77.h"
 
 /* USER CODE END Includes */
 
@@ -36,6 +39,36 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+//Pin Defines
+#define CS_Inner GPIO_PIN_0
+#define CS_Outer GPIO_PIN_1
+#define CS_Date GPIO_PIN_2
+#define CS_Time GPIO_PIN_3
+#define CS_Pulse GPIO_PIN_4
+#define Ser_Data GPIO_PIN_8
+#define Ser_Clock GPIO_PIN_9
+#define Ser_Latch GPIO_PIN_10
+#define RTC_Lock GPIO_PIN_15
+#define PON GPIO_PIN_14
+#define USB_Connect GPIO_PIN_8
+
+//MAX7221 Defines
+#define Dig0 0x1
+#define Dig1 0x2
+#define Dig2 0x3
+#define Dig3 0x4
+#define Dig4 0x5
+#define Dig5 0x6
+#define Dig6 0x7
+#define Dig7 0x8
+#define DecodeMode 0x9
+#define Intensity 0xA
+#define ScanLimit 0xB
+#define Shutdown 0xC
+#define DispTest 0xF
+
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -46,6 +79,32 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+
+//timestamp variables
+uint32_t pulse_time1, pulse_time2, period_time;
+
+//indicator array: 
+//CEST-P1-P2-P3-PErr-Mo-Di-Mi-Do-Fr-Sa-So-CET
+bool leds[13];
+
+//Minute Telegrams
+uint8_t bitno;
+bool oldminute[60], newminute[60];
+
+//time data variable
+uint8_t hour_tens, hour_ones, 
+        minute_tens, minute_ones, 
+        second_tens, second_ones, 
+        year_tens, year_ones, 
+        month_tens, month_ones, 
+        day_tens, day_ones, 
+        week;
+uint16_t period, pulse;
+
+//SPI
+uint8_t data_buf[2];
+
+bool ok = false;
 
 /* USER CODE END PV */
 
@@ -91,7 +150,11 @@ int main(void)
   MX_RTC_Init();
   MX_SPI1_Init();
   MX_USB_DEVICE_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+
+  // Module Init and test routines
+  IO_Init();
 
   /* USER CODE END 2 */
 
@@ -102,6 +165,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+    
   }
   /* USER CODE END 3 */
 }
@@ -154,6 +219,216 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void IO_Init(void)
+{
+  HAL_GPIO_WritePin(GPIOB, PON, 1);
+  HAL_GPIO_WritePin(GPIOB, USB_Connect, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+  HAL_GPIO_WritePin(GPIOA, Ser_Clock, 0);
+  HAL_GPIO_WritePin(GPIOA, Ser_Data, 0);
+  HAL_GPIO_WritePin(GPIOA, Ser_Latch, 0);
+
+//Enable Displays
+  data_buf[0] = Shutdown;
+  data_buf[1] = 0x01;
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+
+//set 7segments to BCD
+  data_buf[0] = DecodeMode;
+  data_buf[1] = 0xFF;
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+
+//set segment size to 6
+  data_buf[0] = ScanLimit;
+  data_buf[1] = 0x05;
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 0);
+
+//set all segments to 0
+  data_buf[0] = Dig0;
+  data_buf[1] = 0x00;
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+  data_buf[0] = Dig1;
+  data_buf[1] = 0x00;
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+  data_buf[0] = Dig2;
+  data_buf[1] = 0x00;
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+  data_buf[0] = Dig3;
+  data_buf[1] = 0x00;
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+  data_buf[0] = Dig4;
+  data_buf[1] = 0x00;
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+  data_buf[0] = Dig5;
+  data_buf[1] = 0x00;
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Date, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Time, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+  data_buf[0] = Dig6;
+  data_buf[1] = 0x00;
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+  data_buf[0] = Dig7;
+  data_buf[1] = 0x00;
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 1);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, CS_Inner, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Outer, 0);
+  HAL_GPIO_WritePin(GPIOA, CS_Pulse, 0);
+
+//set decimal points
+  MAX7221_Send(CS_Date, Dig2, 0x80);
+  MAX7221_Send(CS_Date, Dig4, 0x80);
+  MAX7221_Send(CS_Time, Dig2, 0x80);
+  MAX7221_Send(CS_Time, Dig4, 0x80);
+
+  for(int i = 0; i < 13; i++)
+    leds[i] = 0;
+  LED_Indicators(leds);
+
+}
+
+void MAX7221_Send(uint16_t _pin, uint8_t _reg, uint8_t _data)
+{
+  data_buf[0] = _reg;
+  data_buf[1] = _data;
+  delay_us(1);
+    HAL_GPIO_WritePin(GPIOA, _pin, 1);
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)&data_buf, 2, 15);
+  HAL_GPIO_WritePin(GPIOA, _pin, 0);
+}
+
+//Update LED Indicators
+void LED_Indicators(bool arr[13])
+{
+  for(int i = 12; i != 0; i--)
+  {
+    HAL_GPIO_WritePin(GPIOA, Ser_Data, arr[i]);
+    delay_us(1);
+    HAL_GPIO_WritePin(GPIOA, Ser_Clock, 1);
+    delay_us(1);
+    HAL_GPIO_WritePin(GPIOA, Ser_Clock, 1);
+  }
+  delay_us(1);
+  HAL_GPIO_WritePin(GPIOA, Ser_Latch, 1);
+  delay_us(1);
+  HAL_GPIO_WritePin(GPIOA, Ser_Latch, 1);
+}
+
+//Interrupt Handler
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if(GPIO_Pin == GPIO_PIN_15)
+  {
+    //Read Pulse and process times
+    pulse_time1 = HAL_GetTick();
+    period = pulse_time1 - period_time;
+    period_time = pulse_time1;
+    while(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15));
+    pulse_time2 = HAL_GetTick();
+    pulse = pulse_time2 - pulse_time1;
+
+    // Use data gathered //
+
+    //New Minute start
+    if(period > 1500)
+    {
+      ok = true;
+      bitno = 0;
+    }
+  }
+}
 
 /* USER CODE END 4 */
 
