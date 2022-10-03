@@ -33,6 +33,8 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "stdbool.h"
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -54,6 +56,12 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+
+void MAX7221_Send(uint16_t _pin, uint8_t _reg, uint8_t _data);
+
+void LED_Indicators(bool arr[13]);
+
+void IO_Init(void);
 
 /* USER CODE END EFP */
 
