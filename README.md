@@ -37,10 +37,10 @@ To mitigate possible clock drift, the RTC will be updated on the full hour. This
   - all on one board
   - ~~seperate frontpanel pcb~~
 - [x] Draw Layout
-- [ ] Review by theBrutzler
-- [ ] Order Parts
-- [ ] check footprints
-- [ ] Order PCB
+- [x] Review by theBrutzler
+- [x] Order Parts
+- [x] check footprints
+- [x] Order PCB
 - [ ] Assemble
 
 ---
