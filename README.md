@@ -41,18 +41,18 @@ To mitigate possible clock drift, the RTC will be updated on the full hour. This
 - [x] Order Parts
 - [x] check footprints
 - [x] Order PCB
-- [ ] Assemble
+- [x] Assemble
 
 ---
 
 ## Roadmap Software
 
 - [ ] get USB running (for Debug)
-- [ ] Get DCF77 Antenna working and bits decoded
-- [ ] get MCP7221 running
-- [ ] get shift registers running
-- [ ] set up flags for stats and data
-- [ ] get LED rings running
-- [ ] get RTC running
-- [ ] Sync everything to start of minute/second
+- [x] Get DCF77 Antenna working and bits decoded
+- [x] get MCP7221 running
+- [x] get shift registers running
+- [x] set up flags for stats and data
+- [x] get LED rings running
+- [x] get RTC running
+- [x] Sync everything to start of minute/second
 - [ ] get everything running together

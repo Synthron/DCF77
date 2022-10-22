@@ -1,0 +1,71 @@
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 303:Plugin executed on: 'linux'
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 304:Plugin executed with python version: '3.8.10 (default, Jun 22 2022, 20:18:18) \n[GCC 9.4.0]'
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 305:KiCad build version: 6.0.7-f9a2dced07~116~ubuntu20.04.1
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 306:Plugin version: 1.2.1
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 307:Frame repr: <wx._core.Frame object at 0x7f48489575e0>
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 331:Preparing replicator with D259 as a reference
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 106:getting a list of all footprints on board
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 118:Footprint REF** does not have Sheetfile property, it will not be replicated. Most likely it is only in schematics
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 118:Footprint REF** does not have Sheetfile property, it will not be replicated. Most likely it is only in schematics
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 118:Footprint REF** does not have Sheetfile property, it will not be replicated. Most likely it is only in schematics
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 118:Footprint REF** does not have Sheetfile property, it will not be replicated. Most likely it is only in schematics
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 118:Footprint REF** does not have Sheetfile property, it will not be replicated. Most likely it is only in schematics
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 118:Footprint G*** does not have Sheetfile property, it will not be replicated. Most likely it is only in schematics
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 118:Footprint REF** does not have Sheetfile property, it will not be replicated. Most likely it is only in schematics
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 118:Footprint G*** does not have Sheetfile property, it will not be replicated. Most likely it is only in schematics
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 359:source anchor footprint is 'D259'
+Located on: ['Outer_Ring']
+With filenames: ['LED_ring.kicad_sch']
+With sheet_id:['Outer_Ring']
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 366:Corresponding footprints are 
+[('D359', ['Inner_Ring']), ('D259', ['Outer_Ring'])]
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 378:Showing dialog
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 344:constructing a list of sheets suitable for replication on level:'Outer_Ring', file:'LED_ring.kicad_sch'
+10-15 12:06:08 com_github_MitjaNemec_ReplicateLayout.replicate_layout 381:suitable sheets are:[['Inner_Ring']]
+10-15 12:06:09 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1112:Level selected: ['Outer_Ring']
+10-15 12:06:10 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 384:Toolbar position: wx.Point(1637, 165)
+10-15 12:06:10 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 390:Dialog position: wx.Point(1273, 165)
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 344:constructing a list of sheets suitable for replication on level:'Outer_Ring', file:'LED_ring.kicad_sch'
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 381:suitable sheets are:[['Inner_Ring']]
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 157:Replicating layout
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 154:Starting replication of sheets: [['Inner_Ring']]
+on level: ['Outer_Ring']
+with tracks=True, zone=True, text=True, text=True, containing=True, remove=False, locked footprints=False, by_group=False
+10-15 12:06:23 root 243:updating GUI message: 'Preparing for replication'
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 224:Getting the list of source footprints
+10-15 12:06:23 root 248:updating GUI with: 0
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 239:Getting the list of all the remaining footprints
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 244:Getting nets local to source footprints
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 247:Getting source bounding box
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 251:Getting source tracks
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 266:Getting source zones
+10-15 12:06:23 root 248:updating GUI with: 62
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 275:Getting source text items
+10-15 12:06:23 root 248:updating GUI with: 75
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 284:Getting source drawing items
+10-15 12:06:23 root 243:updating GUI message: 'Replicating footprints'
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 678:Replicating footprints
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 684:Replicating footprints on sheet ['Inner_Ring']
+10-15 12:06:23 root 248:updating GUI with: 9
+10-15 12:06:23 root 248:updating GUI with: 51
+10-15 12:06:23 root 248:updating GUI with: 53
+10-15 12:06:23 root 248:updating GUI with: 98
+10-15 12:06:23 root 243:updating GUI message: 'Replicating tracks'
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 844:Replicating tracks
+10-15 12:06:23 root 248:updating GUI with: 0
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 850:Replicating tracks on sheet ['Inner_Ring']
+10-15 12:06:23 root 248:updating GUI with: 12
+10-15 12:06:23 root 248:updating GUI with: 13
+10-15 12:06:23 root 248:updating GUI with: 60
+10-15 12:06:23 root 243:updating GUI message: 'Replicating zones'
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 909:Replicating zones
+10-15 12:06:23 root 248:updating GUI with: 0
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 916:Replicating zones on sheet ['Inner_Ring']
+10-15 12:06:23 root 243:updating GUI message: 'Replicating text'
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 985:Replicating text
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 992:Replicating text on sheet ['Inner_Ring']
+10-15 12:06:23 root 243:updating GUI message: 'Replicating drawings'
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1032:Replicating drawings
+10-15 12:06:23 root 248:updating GUI with: 0
+10-15 12:06:23 com_github_MitjaNemec_ReplicateLayout.replicate_layout 1038:Replicating drawings on sheet ['Inner_Ring']
+10-15 12:06:25 com_github_MitjaNemec_ReplicateLayout.action_replicate_layout 177:Replication complete

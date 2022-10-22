@@ -62,6 +62,11 @@ void MAX7221_Send(uint16_t _pin, uint8_t _reg, uint8_t _data);
 void LED_Indicators(bool arr[13]);
 
 void IO_Init(void);
+void analyze(void);
+void sekundentakt(void);
+void pulstakt(void);
+void RTC_Write(void);
+void RTC_Read(void);
 
 /* USER CODE END EFP */
 
