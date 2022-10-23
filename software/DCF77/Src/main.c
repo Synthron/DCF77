@@ -109,6 +109,7 @@ uint32_t minstart = 0;
 
 uint8_t t, h1, h2, z1, z2, e1, e2;
 uint8_t out[8];
+char usb_buffer[45];
 
 /* USER CODE END PV */
 
@@ -162,6 +163,7 @@ int main(void)
   IO_Init();
 
   RTC_Read();
+  HAL_GPIO_WritePin(GPIOB, USB_Connect, 0);
 
   pulse_time1 = HAL_GetTick();
   pulse_time2 = pulse_time1;
@@ -247,9 +249,9 @@ void RTC_Read(void)
   /* Get the RTC current Date */
   HAL_RTC_GetDate(&hrtc, &gDate, RTC_FORMAT_BCD);
 
-  gDate.Year    = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1); // backup register
-  gDate.Month   = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2); // backup register
-  gDate.Date    = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR3); // backup register
+  gDate.Year = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1);    // backup register
+  gDate.Month = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR2);   // backup register
+  gDate.Date = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR3);    // backup register
   gDate.WeekDay = HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR4); // backup register
 
   hour_tens = gTime.Hours >> 4;
@@ -285,17 +287,16 @@ void RTC_Write(void)
   sTime.Hours = (hour_tens << 4) + hour_ones;       // set hours
   sTime.Minutes = (minute_tens << 4) + minute_ones; // set minutes
   sTime.Seconds = 0x00;                             // set seconds
-  sDate.WeekDay = week;                             // day
   sDate.Month = (month_tens << 4) + month_ones;     // month
   sDate.Date = (day_tens << 4) + day_ones;          // date
   sDate.Year = (year_tens << 4) + year_ones;        // year
 
   HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD);
   HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD);
-  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, sDate.Year); // backup register
+  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, sDate.Year);  // backup register
   HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR2, sDate.Month); // backup register
-  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR3, sDate.Date); // backup register
-  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR4, sDate.WeekDay); // backup register
+  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR3, sDate.Date);  // backup register
+  HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR4, week);        // backup register
   HAL_GPIO_WritePin(GPIOA, RTC_Lock, 1);
 }
 
@@ -318,6 +319,7 @@ void sekundentakt(void)
     bitno = 0;
     digs = 0;
     bits = 0;
+
     for (int i = 1; i < 9; i++)
     {
       MAX7221_Send(CS_Outer, i, out[i - 1]);
@@ -327,7 +329,44 @@ void sekundentakt(void)
       MAX7221_Send(CS_Inner, i, 0x0);
     }
     analyze();
-    if (((hour_ones + hour_tens) > 0) && ((hour_ones + hour_tens) < 24)) //&& ((minute_ones + minute_tens) == 0))
+    if (minstart < 2)
+    {
+      RTC_Read();
+      if (minstart == 1)
+      {
+        minute_ones++;
+        if (minute_ones == 10)
+        {
+          minute_ones = 0;
+          minute_tens++;
+          if (minute_tens == 6)
+          {
+            minute_tens = 0;
+            hour_ones++;
+            if (hour_ones == 10)
+            {
+              hour_ones = 0;
+              hour_tens++;
+            }
+          }
+        }
+        MAX7221_Send(CS_Time, Dig0, hour_tens);
+        MAX7221_Send(CS_Time, Dig1, hour_ones | 0x80);
+        MAX7221_Send(CS_Time, Dig2, minute_tens);
+        MAX7221_Send(CS_Time, Dig3, minute_ones | 0x80);
+      }
+    }
+    else
+    {
+      sprintf(usb_buffer, "Es ist der %d%d.%d%d.20%d%d um %d%d:%d%d:00 Uhr.\r\n",
+              day_tens, day_ones,
+              month_tens, month_ones,
+              year_tens, year_ones,
+              hour_tens, hour_ones,
+              minute_tens, minute_ones);
+      CDC_Transmit_FS(usb_buffer, strlen(usb_buffer));
+    }
+    if (((hour_ones + hour_tens) > 0) && ((hour_ones + (hour_tens << 4)) < 24) && ((minute_ones + minute_tens) == 0))
     {
       RTC_Write();
     }
@@ -466,7 +505,7 @@ void analyze(void)
   bool mo = false, di = false, mi = false, d = false, fr = false, sa = false, so = false;
   switch (week)
   {
-  case 0:
+  case 1:
     mo = true;
     di = false;
     mi = false;
@@ -475,7 +514,7 @@ void analyze(void)
     sa = false;
     so = false;
     break;
-  case 1:
+  case 2:
     mo = false;
     di = true;
     mi = false;
@@ -484,7 +523,7 @@ void analyze(void)
     sa = false;
     so = false;
     break;
-  case 2:
+  case 3:
     mo = false;
     di = false;
     mi = true;
@@ -493,7 +532,7 @@ void analyze(void)
     sa = false;
     so = false;
     break;
-  case 3:
+  case 4:
     mo = false;
     di = false;
     mi = false;
@@ -502,7 +541,7 @@ void analyze(void)
     sa = false;
     so = false;
     break;
-  case 4:
+  case 5:
     mo = false;
     di = false;
     mi = false;
@@ -511,7 +550,7 @@ void analyze(void)
     sa = false;
     so = false;
     break;
-  case 5:
+  case 6:
     mo = false;
     di = false;
     mi = false;
@@ -520,7 +559,7 @@ void analyze(void)
     sa = true;
     so = false;
     break;
-  case 6:
+  case 7:
     mo = false;
     di = false;
     mi = false;
@@ -544,7 +583,7 @@ void analyze(void)
   {
     perr = true;
   }
-  
+
   if (!perr && (minstart > 1))
   {
     MAX7221_Send(CS_Time, Dig0, hour_tens);
@@ -569,13 +608,13 @@ void analyze(void)
   leds[10] = minute[35];
   leds[9] = minute[58];
   leds[8] = perr;
-  leds[7] = mo;
-  leds[6] = di;
-  leds[5] = mi;
-  leds[4] = d;
-  leds[3] = fr;
-  leds[2] = sa;
-  leds[1] = so;
+  leds[7] = so;
+  leds[6] = mo;
+  leds[5] = di;
+  leds[4] = mi;
+  leds[3] = d;
+  leds[2] = fr;
+  leds[1] = sa;
   leds[0] = minute[18];
 
   LED_Indicators(leds);
